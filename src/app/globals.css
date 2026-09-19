@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+:root {
+  --color-ink: #12262b;
+  --color-deep: #0f3d3e;
+  --color-deep-dark: #0a2b2c;
+  --color-linen: #f5f2ea;
+  --color-linen-2: #efeadd;
+  --color-amber: #d9a441;
+  --color-amber-dark: #b8842b;
+  --color-coral: #e4572e;
+  --color-coral-dark: #c8451f;
+}
+
+@theme inline {
+  --color-ink: var(--color-ink);
+  --color-deep: var(--color-deep);
+  --color-deep-dark: var(--color-deep-dark);
+  --color-linen: var(--color-linen);
+  --color-linen-2: var(--color-linen-2);
+  --color-amber: var(--color-amber);
+  --color-amber-dark: var(--color-amber-dark);
+  --color-coral: var(--color-coral);
+  --color-coral-dark: var(--color-coral-dark);
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-linen);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: var(--color-amber);
+  color: var(--color-deep-dark);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-amber);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
