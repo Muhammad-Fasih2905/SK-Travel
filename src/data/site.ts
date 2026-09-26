@@ -1,7 +1,6 @@
 export const site = {
   brand: "SK",
   travelName: "SK Travels",
-  realEstateName: "SK Real Estate",
   phoneDisplay: "0321 235 1889",
   phoneHref: "tel:+923212351889",
   whatsappHref: "https://wa.me/923212351889",
@@ -10,10 +9,10 @@ export const site = {
 };
 
 export const travelNav = [
-  { label: "Home", href: "/travel" },
-  { label: "Packages", href: "/travel/packages" },
-  { label: "Visa Services", href: "/travel/visa-services" },
-  { label: "Articles", href: "/travel/articles" },
-  { label: "About", href: "/travel/about" },
-  { label: "Contact", href: "/travel/contact" },
+  { label: "Home", href: "/" },
+  { label: "Packages", href: "/packages" },
+  { label: "Visa Services", href: "/visa-services" },
+  { label: "Articles", href: "/articles" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
 ];
