@@ -3,28 +3,26 @@ import { packages } from "@/data/packages";
 import { articles } from "@/data/articles";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = "https://sk-associates.example.com";
+  const base = "https://sktravels.example.com";
   const staticRoutes = [
     "",
-    "/travel",
-    "/travel/packages",
-    "/travel/visa-services",
-    "/travel/articles",
-    "/travel/about",
-    "/travel/contact",
-    "/real-estate",
+    "/packages",
+    "/visa-services",
+    "/articles",
+    "/about",
+    "/contact",
   ].map((route) => ({
     url: `${base}${route}`,
     lastModified: new Date(),
   }));
 
   const packageRoutes = packages.map((p) => ({
-    url: `${base}/travel/packages/${p.slug}`,
+    url: `${base}/packages/${p.slug}`,
     lastModified: new Date(),
   }));
 
   const articleRoutes = articles.map((a) => ({
-    url: `${base}/travel/articles/${a.slug}`,
+    url: `${base}/articles/${a.slug}`,
     lastModified: a.updatedAt,
   }));
 

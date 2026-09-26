@@ -17,12 +17,6 @@ export function TravelFooter() {
             Visa consultancy and holiday packages for travellers who want a
             straightforward, guided process from application to arrival.
           </p>
-          <p className="mt-6 text-xs uppercase tracking-[0.16em] text-linen/40">
-            Part of SK Associates — also home to{" "}
-            <Link href="/real-estate" className="underline decoration-linen/30 underline-offset-4 hover:text-linen">
-              SK Real Estate
-            </Link>
-          </p>
         </div>
 
         <div>

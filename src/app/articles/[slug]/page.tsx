@@ -6,25 +6,27 @@ import { ArrowLeft, ArrowUpRight, Clock, Calendar } from "lucide-react";
 import { articles, getArticle } from "@/data/articles";
 import { unsplash } from "@/data/images";
 import { ArticleCard } from "@/components/ArticleCard";
+import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import { site } from "@/data/site";
 
 export function generateStaticParams() {
   return articles.map((a) => ({ slug: a.slug }));
 }
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
-}): Metadata {
-  const article = getArticle(params.slug);
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const article = getArticle(slug);
   if (!article) return {};
   return {
     title: article.metaTitle,
     description: article.metaDescription,
     keywords: article.keywords,
     alternates: {
-      canonical: `/travel/articles/${article.slug}`,
+      canonical: `/articles/${article.slug}`,
     },
     openGraph: {
       title: article.metaTitle,
@@ -51,12 +53,13 @@ function formatDate(iso: string) {
   });
 }
 
-export default function ArticleDetail({
+export default async function ArticleDetail({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const article = getArticle(params.slug);
+  const { slug } = await params;
+  const article = getArticle(slug);
   if (!article) notFound();
 
   const related = articles.filter((a) => a.slug !== article.slug).slice(0, 3);
@@ -79,7 +82,7 @@ export default function ArticleDetail({
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://sk-associates.example.com/travel/articles/${article.slug}`,
+      "@id": `https://sktravels.example.com/articles/${article.slug}`,
     },
   };
 
@@ -104,7 +107,7 @@ export default function ArticleDetail({
         </div>
         <div className="relative mx-auto max-w-3xl px-5 py-14 sm:px-8 sm:py-20">
           <Link
-            href="/travel/articles"
+            href="/articles"
             className="inline-flex items-center gap-1.5 text-sm font-medium text-linen/70 hover:text-linen"
           >
             <ArrowLeft className="h-4 w-4" />
@@ -113,55 +116,60 @@ export default function ArticleDetail({
           <p className="mt-6 text-sm font-semibold uppercase tracking-[0.14em] text-amber">
             {article.category}
           </p>
-          <h1 className="mt-3 font-display text-3xl font-semibold sm:text-5xl">
-            {article.title}
-          </h1>
-          <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-linen/65">
-            <span className="flex items-center gap-1.5">
-              <Calendar className="h-4 w-4" strokeWidth={1.75} />
-              {formatDate(article.publishedAt)}
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Clock className="h-4 w-4" strokeWidth={1.75} />
-              {article.readingTime}
-            </span>
-          </div>
+          <Reveal delay={0.1}>
+            <h1 className="mt-3 font-display text-3xl font-semibold sm:text-5xl">
+              {article.title}
+            </h1>
+            <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-linen/65">
+              <span className="flex items-center gap-1.5">
+                <Calendar className="h-4 w-4" strokeWidth={1.75} />
+                {formatDate(article.publishedAt)}
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Clock className="h-4 w-4" strokeWidth={1.75} />
+                {article.readingTime}
+              </span>
+            </div>
+          </Reveal>
         </div>
       </section>
 
       <div className="mx-auto max-w-3xl px-5 py-14 sm:px-8">
-        <div className="space-y-5">
+        <RevealGroup className="space-y-5" stagger={0.04}>
           {article.content.map((section, i) => {
             if (section.type === "heading") {
               return (
-                <h2
-                  key={i}
-                  className="pt-4 font-display text-2xl font-semibold text-deep"
-                >
-                  {section.text}
-                </h2>
+                <RevealItem key={i}>
+                  <h2 className="pt-4 font-display text-2xl font-semibold text-deep">
+                    {section.text}
+                  </h2>
+                </RevealItem>
               );
             }
             if (section.type === "list") {
               return (
-                <ul key={i} className="list-disc space-y-2 pl-5">
-                  {section.items.map((item, j) => (
-                    <li key={j} className="text-[16px] leading-relaxed text-ink/75">
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+                <RevealItem key={i}>
+                  <ul className="list-disc space-y-2 pl-5">
+                    {section.items.map((item, j) => (
+                      <li key={j} className="text-[16px] leading-relaxed text-ink/75">
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </RevealItem>
               );
             }
             return (
-              <p key={i} className="text-[16px] leading-relaxed text-ink/75">
-                {section.text}
-              </p>
+              <RevealItem key={i}>
+                <p className="text-[16px] leading-relaxed text-ink/75">
+                  {section.text}
+                </p>
+              </RevealItem>
             );
           })}
-        </div>
+        </RevealGroup>
 
-        <div className="mt-12 flex flex-col items-start justify-between gap-5 rounded-2xl bg-amber/15 p-7 sm:flex-row sm:items-center">
+        <Reveal className="mt-12 flex flex-col items-start justify-between gap-5 rounded-2xl bg-amber/15 p-7 sm:flex-row sm:items-center">
           <div>
             <p className="font-display text-xl font-semibold text-deep">
               Have a question about this?
@@ -172,25 +180,29 @@ export default function ArticleDetail({
           </div>
           <a
             href={site.whatsappHref}
-            className="inline-flex shrink-0 items-center gap-2 rounded-full bg-deep px-6 py-3 text-[15px] font-semibold text-linen hover:bg-deep-dark"
+            className="inline-flex shrink-0 items-center gap-2 rounded-full bg-deep px-6 py-3 text-[15px] font-semibold text-linen transition-all hover:-translate-y-0.5 hover:bg-deep-dark hover:shadow-lg hover:shadow-deep/25"
           >
             Message us
             <ArrowUpRight className="h-4 w-4" />
           </a>
-        </div>
+        </Reveal>
       </div>
 
       {related.length > 0 && (
         <section className="border-t border-deep/10 bg-linen-2">
           <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8">
-            <h2 className="font-display text-2xl font-semibold text-deep">
-              More articles
-            </h2>
-            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <Reveal>
+              <h2 className="font-display text-2xl font-semibold text-deep">
+                More articles
+              </h2>
+            </Reveal>
+            <RevealGroup className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((a) => (
-                <ArticleCard key={a.slug} article={a} />
+                <RevealItem key={a.slug}>
+                  <ArticleCard article={a} />
+                </RevealItem>
               ))}
-            </div>
+            </RevealGroup>
           </div>
         </section>
       )}

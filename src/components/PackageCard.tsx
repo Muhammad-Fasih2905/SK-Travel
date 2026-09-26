@@ -14,7 +14,7 @@ const categoryLabel: Record<TravelPackage["category"], string> = {
 export function PackageCard({ pkg, featured = false }: { pkg: TravelPackage; featured?: boolean }) {
   return (
     <Link
-      href={`/travel/packages/${pkg.slug}`}
+      href={`/packages/${pkg.slug}`}
       className="group flex flex-col overflow-hidden rounded-2xl border border-deep/10 bg-white/70 transition-all hover:-translate-y-1 hover:border-amber/60 hover:shadow-[0_18px_40px_-24px_rgba(15,61,62,0.35)]"
     >
       <div className="relative aspect-[16/10] w-full overflow-hidden bg-linen-2">

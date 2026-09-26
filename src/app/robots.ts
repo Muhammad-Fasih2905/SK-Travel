@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://sk-associates.example.com/sitemap.xml",
+    sitemap: "https://sktravels.example.com/sitemap.xml",
   };
 }
